@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Modality-invariant Visual Odometry for Embodied Vision">
+  <meta name="keywords" content="Visual Odometry, VO-Transformer, Embodiment">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modality-invariant Visual Odometry for Embodied Vision</title>
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P5JX6G1Y2L"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-P5JX6G1Y2L');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">Modality-invariant Visual Odometry for Embodied Vision</h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://memmelma.github.io">Marius Memmel</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://roman-bachmann.github.io/">Roman Bachmann</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="https://vilab.epfl.ch/zamir/">Amir Zamir</a><sup>2</sup>,
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>University of Washington,</span>
+              <span class="author-block"><sup>2</sup>Swiss Federal Institute of Technology Lausanne (EPFL)</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2011.12948" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2011.12948" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Video Link. -->
+                <!-- <span class="link-block">
+                <a href="TBD"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span> -->
+                <!-- Code Link. -->
+                <span class="link-block">
+                  <a href="https://github.com/memmelma/VO-Transformer"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <video id="teaser" autoplay muted loop playsinline height="100%">
+          <source src="./static/videos/nav_attention_long_fast.mp4" type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          <span class="vot">VOTransformer</span> localizes the agent from visual observations and is agnostic to the
+          input modality.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Effectively localizing an agent in a realistic, noisy setting is crucial for many embodied
+              vision tasks. Visual Odometry (VO) is a practical substitute for unreliable GPS and compass
+              sensors, especially in indoor environments. While SLAM-based methods show a solid performance
+              without large data requirements, they are less flexible and robust w.r.t. to noise and changes
+              in the sensor suite compared to learning-based approaches. Recent deep VO models, however,
+              limit themselves to a fixed set of input modalities, e.g., RGB and depth, while training on
+              millions of samples. <b>When sensors fail, sensor suites change, or modalities are intentionally
+                looped out</b> due to available resources, e.g., power consumption, the <b>models fail
+                catastrophically</b>. Furthermore, training these models from scratch is even more expensive
+              without simulator access or suitable existing models that can be fine-tuned. While such
+              scenarios get mostly ignored in simulation, they commonly hinder a model's reusability in
+              real-world applications.
+            </p>
+            <img src="./static/images/money_figure.jpg" class="money-figure"
+              alt="Navigation setup where GPS+Compass is missing and (visual) sensor availability varies." />
+            <p>
+              We propose a <b>Transformer-based modality-invariant VO</b> approach that
+              <b>can deal with diverse or changing sensor suites</b> of navigation agents. Our model outperforms
+              previous methods while <b>training on only a fraction of the data</b>. We hope this method opens the
+              door to a broader range of real-world applications that can benefit from flexible and learned
+              VO models.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!--/ Abstract. -->
+
+      <!-- Paper video. -->
+      <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="TBD"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+      <!--/ Paper video. -->
+    </div>
+  </section>
+
+  <!-- Explicit Modality Invariant Training -->
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered is-mobile is-vcentered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Explicit Modality Invariant Training</h2>
+        </div>
+      </div>
+      <br>
+      <div class="container is-max-desktop">
+
+        <div class="columns is-centered is-mobile is-vcentered">
+          <div class="column is-full-width">
+            <div class="content">
+              <h2 class="title is-4">Navigation Performance</h2>
+              <p>Explicitly training the model to be invariant to its input modalities is one way of dealing with
+                missing sensory information during test-time. We enforce modaly-invarianec through an explicit training
+                scheme:
+                <b>dropping modalities during training to simulate missing modalities during test-time</b>.
+                We model this notion as a multinomial distribution over
+                modality combinations (here: RGB, Depth, RGB-D) with equal probability. For each batch, we draw a
+                sample from the distribution to determine on which combination to train. <b>Try it yourself!</b> Drop
+                modalities from the observations and observe how the agent is still able to localize itself sufficiently
+                to navigate to the goal.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns is-centered is-mobile is-vcentered interpolation-panel">
+          <div class="column is-full-width has-text-centered">
+            <div id="dropmod-wrapper-input" class="dropmod-image">
+              <img src="./static/images/navigation/inv_strip_none_0.gif" />
+            </div>
+            <br>
+            <button class="button" id="drop-rgb-button" onclick="setDropMod('rgb')">
+              <span class="icon">
+                <i class="fas fa-times"></i>
+              </span>
+              <span>Drop RGB</span>
+            </button>
+            <button class="button is-info" id="rgbd-button" onclick="setDropMod('none')">
+              <span class="icon">
+                <i class="fas fa-check"></i>
+              </span>
+              <span>RGB-D</span>
+            </button>
+            <button class="button" id="drop-depth-button" onclick="setDropMod('depth')">
+              <span>Drop Depth</span>
+            </button>
+            <button class="button" id="sample-button" onclick="setDropMod('sample')">
+              <span class="icon">
+                <i class="fas fa-redo"></i>
+              </span>
+              <span>Sample</span>
+            </button>
+            <br>
+            <br>
+            <p style="text-align:center"><i>Hint: Use the bottons to remove modalities from the VOT's observations.</i>
+            </p>
+          </div>
+        </div>
+        <br>
+        <div class="columns is-centered is-mobile is-vcentered">
+          <div class="column is-full-width">
+            <div class="content">
+              <h2 class="title is-4">Side-by-side Comparison</h2>
+              <p>The agent navigates the Cantwell scene from <span style="color: #0001ff;"><b>start</b></span> to <span
+                  style="color: #02ff01;"><b>goal</b></span>.
+                We shows the <span style="color: #3dcc5b;"><b>shortest path</b></span>, the <span
+                  style="color: #010194;"><b>actual path</b></span> taken by the agent,
+                and the <span style="color: #ce0309;"><b>"imaginary" path</b></span> the agent believes it took through
+                its
+                VO estimate.
+                Without invariance training (VOT-B), the localization is inaccurate once modalities are unavailable
+                (Drop
+                RGB / Depth).
+                The localization error accumulates over the course of the trajectory and causes the actual and
+                "imaginary"
+                path to diverge.
+                The result is a failure to complete the episodes. <b>Through explicit modality invariant training (VOT
+                  <i>w/ inv.</i>),
+                  the VOT learns to not rely on a single modality,
+                  leading to success even when modalities are missing!</b>
+              <div class="content has-text-centered">
+                <img src="./static/images/nav_paths.png" class="money-figure"
+                  alt="Navigation setup where GPS+Compass is missing and (visual) sensor availability varies." />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Explicit Modality Invariant Training -->
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <!-- Attention Maps. -->
+      <div class="columns is-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Attention Maps</h2>
+
+          <div class="content has-text-justified">
+            <p>
+              We condition the VOT on the noiseless action taken by the agent. Inspecting the attention maps, we find
+              that different
+              actions prime the VOT to attend to meaningful regions in the image. For instance, turning left leads to
+              the model focusing
+              on regions present at both time steps (see below). This makes intuitive sense, as a turning action of 30°
+              strongly displaces
+              visual features or even pushes them out of the agent’s field of view. A similar behavior emerges for
+              moving forward, which
+              leads to attending on the center regions, e.g., the walls and the end of a hallway (see below).
+            </p>
+          </div>
+          <div class="column is-3 has-text-centered"></div>
+          <div class="columns is-vcentered has-text-centered interpolation-panel">
+            <div class="column interpolation-video-column">
+              <div id="interpolation-image-wrapper">
+                Loading...
+              </div>
+              <input class="slider is-fullwidth is-large is-info" id="interpolation-slider" step="1" min="0" max="3"
+                value="0" type="range">
+              <br>
+              <button class="button is-info" id="fwd-button" onclick="setAttMask('fwd')">
+                <span class="icon">
+                  <i class="fas fa-times"></i>
+                </span>
+                <span>Forward 0.25m</span>
+              </button>
+              <button class="button" id="left-button" onclick="setAttMask('left')">
+                <span class="icon">
+                  <i class="fas fa-times"></i>
+                </span>
+                <span>Turn Left 30°</span>
+              </button>
+              <br>
+              <br>
+              <p style="text-align:center"><i>Hint: Drag the slider to overlay the attention map over the
+                  observations.</i></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/ Attention Maps -->
+    </div>
+  </section>
+
+  <!--  Habitat challenge -->
+  <section class="section">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered is-mobile is-vcentered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Habitat Challenge</h2>
+          <div class="content">
+            <!-- <h2 class="title is-4">Navigation Performance</h2> -->
+            <p>
+              We submit our VOT (RGB-D) to the Habitat Challenge 2021 benchmark (test-std split). Using the same
+              navigation policy as Rank 2,
+              we achieve the <b>highest SSPL training on only 5% of the data</b>. (<a
+                href="https://eval.ai/web/challenges/challenge-page/802/leaderboard/2192">Leaderboard</a>)
+            </p>
+            <div class="table-container">
+              <table class="table" align="center">
+                <thead>
+                  <tr>
+                    <th class="has-text-centered">Rank</th>
+                    <th class="has-text-centered">Participant team</th>
+                    <th class="has-text-centered">S</th>
+                    <th class="has-text-centered">SPL</th>
+                    <th class="has-text-centered">SSPL</th>
+                  </tr>
+                  <tr class="is-info">
+                    <td class="has-text-centered">1</td>
+                    <td class="has-text-centered">MultiModalVO (VOT) (<i>ours</i>)</td>
+                    <td class="has-text-centered">93</td>
+                    <td class="has-text-centered">74</td>
+                    <td class="has-text-centered">77</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="has-text-centered">2</td>
+                    <td class="has-text-centered">VO for Realistic PointGoal</td>
+                    <td class="has-text-centered">94</td>
+                    <td class="has-text-centered">74</td>
+                    <td class="has-text-centered">76</td>
+                  </tr>
+                  <tr>
+                    <td class="has-text-centered">3</td>
+                    <td class="has-text-centered">inspir.ai robotics</td>
+                    <td class="has-text-centered">91</td>
+                    <td class="has-text-centered">70</td>
+                    <td class="has-text-centered">71</td>
+
+                  </tr>
+                  <tr>
+                    <td class="has-text-centered">4</td>
+                    <td class="has-text-centered">VO2021</td>
+                    <td class="has-text-centered">78</td>
+                    <td class="has-text-centered">59</td>
+                    <td class="has-text-centered">69</td>
+                  </tr>
+                  <tr>
+                    <td class="has-text-centered">5</td>
+                    <td class="has-text-centered">Differentiable SLAM-net</td>
+                    <td class="has-text-centered">65</td>
+                    <td class="has-text-centered">47</td>
+                    <td class="has-text-centered">60</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--/ Habitat challenge -->
+
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{memmel2023vot,
+  author    = {Memmel, Marius and Bachmann, Roman and Zamir, Amir},
+  title     = {Modality-invariant Visual Odometry for Embodied Vision},
+  journal   = {CVPR},
+  year      = {2023},
+}</code></pre>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is based on the <a href="https://github.com/nerfies/nerfies.github.io"
+                target="_blank">Nerfies website template</a>,
+              which is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"
+                target="_blank">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
